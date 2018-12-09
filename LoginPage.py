@@ -27,12 +27,16 @@ class LoginPage(object):
         
     def loginCheck(self):		
         name = self.username.get()		
-        secret = self.password.get()		
+        secret = self.password.get()	
+        self.page.destroy()			
+        MainPage(self.root)
+        '''
         if name=='ww' and secret=='123456':			
             self.page.destroy()			
             MainPage(self.root)
         else:
             showinfo(title='Error', message='incorrect username or password')
+        '''
             
     def signup(self):
         

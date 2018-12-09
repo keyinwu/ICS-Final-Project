@@ -8,6 +8,9 @@ import client_state_machine as csm
 
 import threading
 
+from tkinter import *
+from LoginPage import *
+
 class Client:
     def __init__(self, args):
         self.peer = ''
@@ -89,9 +92,16 @@ class Client:
 
     def run_chat(self):
         self.init_chat()
+        root = Tk()
+        root.title('chat system')
+        LoginPage(root)
+        while True:
+            root.update()
+        '''
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
         self.output()
+        '''
         while self.login() != True:
             self.output()
         self.system_msg += 'Welcome, ' + self.get_name() + '!'
