@@ -12,6 +12,8 @@ class LoginPage(object):
         self.x = self.root.winfo_x()
         self.y = self.root.winfo_y()
         
+        self.name = ''
+        
         self.createPage()
         
     def createPage(self):		
@@ -26,6 +28,8 @@ class LoginPage(object):
         Button(self.page, text='sign up', command=self.signup).grid(row=3, column=1, stick=E) 	
         
     def loginCheck(self):		
+        self.name = self.username.get()	
+        
         name = self.username.get()		
         secret = self.password.get()	
         self.page.destroy()			

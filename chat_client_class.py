@@ -20,6 +20,12 @@ class Client:
         self.local_msg = ''
         self.peer_msg = ''
         self.args = args
+        
+        self.root = Tk()
+        self.root.title('Welcome to ICS chat')
+        self.msgtxt = Text(self.root)
+        self.texttxt = Text(self.root)
+        
 
     def quit(self):
         self.socket.shutdown(socket.SHUT_RDWR)
@@ -92,11 +98,10 @@ class Client:
 
     def run_chat(self):
         self.init_chat()
-        root = Tk()
-        root.title('chat system')
-        LoginPage(root)
-        while True:
-            root.update()
+        
+        self.LPage = LoginPage(self.root)
+        while self.LPage.name == '':
+            self.root.update()
         '''
         self.system_msg += 'Welcome to ICS chat\n'
         self.system_msg += 'Please enter your name: '
@@ -104,6 +109,10 @@ class Client:
         '''
         while self.login() != True:
             self.output()
+            
+        self.name = self.LPage.name
+        self.LPage.page.destroy()			
+        self.MPage = MainPage(self.root)
         self.system_msg += 'Welcome, ' + self.get_name() + '!'
         self.output()
         while self.sm.get_state() != S_OFFLINE:
