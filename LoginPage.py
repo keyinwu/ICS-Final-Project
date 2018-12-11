@@ -13,6 +13,7 @@ class LoginPage(object):
         self.y = self.root.winfo_y()
         
         self.name = ''
+        self.logged = False
         
         self.createPage()
         
@@ -29,11 +30,15 @@ class LoginPage(object):
         
     def loginCheck(self):		
         self.name = self.username.get()	
+        #print(self.name)
+        #self.logged = True
         
+        '''
         name = self.username.get()		
         secret = self.password.get()	
         self.page.destroy()			
         MainPage(self.root)
+        '''
         '''
         if name=='ww' and secret=='123456':			
             self.page.destroy()			

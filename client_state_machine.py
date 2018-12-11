@@ -105,6 +105,7 @@ class ClientSM:
 
                 else:
                     self.out_msg += menu
+            
 
             if len(peer_msg) > 0:
                 peer_msg = json.loads(peer_msg)
@@ -138,8 +139,8 @@ class ClientSM:
 
 
             # Display the menu again
-            if self.state == S_LOGGEDIN:
-                self.out_msg += menu
+            #if self.state == S_LOGGEDIN: comment temporarily
+                #self.out_msg += menu
 #==============================================================================
 # invalid state
 #==============================================================================
