@@ -300,12 +300,13 @@ class App(Sprite):
             self.clock.tick(240)
 
         self.on_cleanup()
+        '''
 <<<<<<< HEAD
-'''
+
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
-'''
+
 =======
     
     def score(self):
@@ -321,3 +322,4 @@ if __name__ == "__main__" :
     theApp.on_execute()
     theApp.score()
 >>>>>>> 984eb869a0f086f11439650017424b9b4a358ca2
+'''
