@@ -100,12 +100,12 @@ class App(Sprite):
             self.column = 3
             self.distanceX = 280
             self.marginX = 270
-        elif self.level == 2:
+        '''elif self.level == 2:
             self.color = (180,200,230)
             self.row = 3
             self.column = 4
             self.distanceX = 260
-            self.marginX = 150
+            self.marginX = 150'''
         self.background.fill(self.color)
         #load image classes
         for i in range(self.row):
@@ -193,7 +193,7 @@ class App(Sprite):
         if event.key == pygame.K_q:
             self.on_exit()
         elif event.key == pygame.K_SPACE:
-            if self.level < 2:
+            if self.level < 1: #<2
                 self.level += 1
             else:
                 self.level = 0
