@@ -210,7 +210,7 @@ class App(Sprite):
                 if v.rect.collidepoint(mouseX, mouseY) == True:
                     self.i = self.basicImages.index(l)
                     self.j = l.index(v)
-                    print(self.i,self.j)
+                    #print(self.i,self.j)
                 
     def add_check(self,i,j):
         if len(self.toCheck)<2:
@@ -300,12 +300,12 @@ class App(Sprite):
             self.clock.tick(240)
 
         self.on_cleanup()
-<<<<<<< HEAD
+
 '''
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
-'''
+
 =======
     
     def score(self):
@@ -321,3 +321,4 @@ if __name__ == "__main__" :
     theApp.on_execute()
     theApp.score()
 >>>>>>> 984eb869a0f086f11439650017424b9b4a358ca2
+'''
