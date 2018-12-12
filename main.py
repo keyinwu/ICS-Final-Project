@@ -6,13 +6,14 @@ from pygame.locals import *
 import random
 import createImg
 import createCard
-import function
 import time
+import pickle
 
 
 
 class App(Sprite):
     def __init__(self):
+        #self.name = name
         self._running = True
         self.width = 1200
         self.height = 750
@@ -20,30 +21,53 @@ class App(Sprite):
         self.background = pygame.Surface(self.screen.get_size())
         self.clock = pygame.time.Clock()
         self.color = (230,200,200)
+        #store cards
         self.basicImages = []
         self.images = []
+        #card image source
         self.srcx = ""
         self.srcy = ""
+        #count flipped card, matched cards
         self.count = 0
         self.stage = 0
+        #store cards to be removed
         self.toCheck = []
         self.toCancel = []
+        #chosen card number
         self.i = 0
         self.j = 0
+        #time count
         self.time_start = 0
         self.time_end = 0
+        self.time_use = 0
+        #start counting from the moments two cards are flipped
         self.time_click = 0
-        self.time_delay = 0.3
+        self.time_delay = 1
+        #conditions for opening and ending page
         self.start = False
         self.open = False
         self.end = True
+        #two cards are clicked?
         self.click = False
+        #flip back the cards?
         self.next = False
-        self.time_use = 0
+        #other cards can't be clicked when two cards flipped over
+        self.can_click = True
+        #opening and ending message
         self.myfont = None
         self.text = None
+        #level
+        self.level = 0
+        #level row level column
+        self.row = 0
+        self.column = 0
+        self.distanceX = 0
+        self.marginX = 0
+        #records
+        self.scores={}
         
     def on_setup(self):
+        #update settings
         self.basicImages = []
         self.images = []
         self.src = []
@@ -56,35 +80,52 @@ class App(Sprite):
         self.time_start = 0
         self.time_end = 0
         self.time_click = 0
-        self.time_delay = 0.3
+        self.time_delay = 0.5
         self.start = False
         self.open = False
         self.end = True
         self.click = False
         self.next = False
         self.time_use = 0
-        for i in range(3):
+        #change level
+        if self.level == 0:   
+            self.color = (230,200,200)
+            self.row = 3
+            self.column = 5
+            self.distanceX = 240
+            self.marginX = 40
+        elif self.level == 1:
+            self.color = (200,230,200)
+            self.row = 3
+            self.column = 3
+            self.distanceX = 280
+            self.marginX = 270
+        elif self.level == 2:
+            self.color = (180,200,230)
+            self.row = 3
+            self.column = 4
+            self.distanceX = 260
+            self.marginX = 150
+        self.background.fill(self.color)
+        #load image classes
+        for i in range(self.row):
             self.basicImages.append([])
             self.images.append([])
-            for j in range(5):
-                self.basicImages[i].append(createImg.basicImg(self.screen,"images/00.png",220,300,40,20))
-        #for i in range(8):
-         #   self.srcx = str
-          #  if random.random()<0.5:
-           #     self.images[i].append(createCard.Img(self.screen,"images/11.png",220,300,40,20))
-            #else:
-             #   self.images[i].append(createCard.Img(self.screen,"images/12.png",220,300,40,20))
-
-        for i in range(8):
+            for j in range(self.column):
+                self.basicImages[i].append(createImg.basicImg(self.screen,"images/00.png",185,210,self.marginX,20))
+        #a list of sources   
+        for i in range((self.row*self.column)//2):
             self.srcx = str(random.randint(1,4))
             self.srcy = str(random.randint(1,13))
             self.src.append("images/"+self.srcx+self.srcy+".png")
-            if i<7:
-                self.src.append("images/"+self.srcx+self.srcy+".png")
+            self.src.append("images/"+self.srcx+self.srcy+".png")
+        if (self.row*self.column)%2 != 0:
+            self.src.append("images/"+str(random.randint(1,4))+str(random.randint(1,13))+".png")
+        #randomly choose sources
         for i in range(len(self.images)):
-            for j in range(5):
+            for j in range(self.column):
                 item = random.choice(self.src)
-                self.images[i].append(createCard.Img(self.screen,item,220,300,40,20))
+                self.images[i].append(createCard.Img(self.screen,item,185,210,self.marginX,20))
                 self.src.remove(item)
 
     def on_init(self):
@@ -94,7 +135,6 @@ class App(Sprite):
         self.background = self.background.convert()
         self.screen.blit(self.background, (0,0))
         pygame.display.set_caption('Flip-Flop Match Game')
-        #self.on_setup()
         pygame.display.flip()
         
 
@@ -111,10 +151,14 @@ class App(Sprite):
         
     def ending(self):
         self.screen.blit(self.background, (0,0))
-        self.text1 = self.font.render('Press SPACE to try again', False, (0, 0, 0))
+        if self.level > 0:
+            self.text1 = self.font.render('Press SPACE to go to the next level', False, (0, 0, 0))
+            self.screen.blit(self.text1,(self.width/2-140,self.height/2-20))
+        else:
+            self.text1 = self.font.render('Press SPACE to play again from level one', False, (0, 0, 0))
+            self.screen.blit(self.text1,(self.width/2-160,self.height/2-20))
         self.text3 = self.font.render('Press q to leave', False, (0, 0, 0))
         self.text2 = self.font2.render('Total time use: '+"{:.2f}".format(self.time_use)+" seconds", False, (0, 0, 0))
-        self.screen.blit(self.text1,(self.width/2-105,self.height/2-20))
         self.screen.blit(self.text3,(self.width/2-65,self.height/2+20))
         self.screen.blit(self.text2,(self.width/2-230,self.height/2-100))
         self.end = True
@@ -126,7 +170,7 @@ class App(Sprite):
                 if i>0:
                     self.basicImages[i][j].rect.y = self.basicImages[i-1][j].rect.y + 240
                 if j>0:
-                    self.basicImages[i][j].rect.x = self.basicImages[i][j-1].rect.x + 240
+                    self.basicImages[i][j].rect.x = self.basicImages[i][j-1].rect.x + self.distanceX
                 self.basicImages[i][j].blitme()
                
         for s in range(len(self.images)):
@@ -134,7 +178,7 @@ class App(Sprite):
                 if s>0:
                     self.images[s][t].rect.y = self.images[s-1][t].rect.y + 240
                 if t>0:
-                    self.images[s][t].rect.x = self.images[s][t-1].rect.x + 240
+                    self.images[s][t].rect.x = self.images[s][t-1].rect.x + self.distanceX
                     
         self.start = False        
     
@@ -149,11 +193,16 @@ class App(Sprite):
         if event.key == pygame.K_q:
             self.on_exit()
         elif event.key == pygame.K_SPACE:
+            if self.level < 2:
+                self.level += 1
+            else:
+                self.level = 0
             self.on_setup()
             self.start = True
             self.end = False
-            
+
     def on_click_pos(self):
+        print(self.i,self.j)
         mouseX = pygame.mouse.get_pos()[0]
         mouseY = pygame.mouse.get_pos()[1]
         for l in self.basicImages:   
@@ -161,6 +210,7 @@ class App(Sprite):
                 if v.rect.collidepoint(mouseX, mouseY) == True:
                     self.i = self.basicImages.index(l)
                     self.j = l.index(v)
+                    print(self.i,self.j)
                 
     def add_check(self,i,j):
         if len(self.toCheck)<2:
@@ -183,8 +233,8 @@ class App(Sprite):
             
     def update(self):
         self.screen.blit(self.background, (0,0))
-        for i in range(3):
-            for j in range(5):
+        for i in range(len(self.basicImages)):
+            for j in range(len(self.basicImages[i])):
                 self.basicImages[i][j].blitme()
                     
     def calc_time(self):
@@ -195,8 +245,8 @@ class App(Sprite):
         self.time_use = self.time_end-self.time_start
         if time.time() - self.time_click > self.time_delay and time.time() - self.time_click < self.time_delay+0.1:
             self.next = True
-
-        
+        if time.time()-self.time_click < self.time_delay:
+            self.can_click = False
     def on_execute(self):
         if self.on_init() == False:
             self._running = False
@@ -204,9 +254,11 @@ class App(Sprite):
         prevj = -1
         while(self._running):
             self.calc_time()
+            #draw opening page
             if self.open == False:
                 self.opening()
                 self.open = True
+            #cover with game page
             if self.start == True:
                 self.on_go()                
             #click = pygame.mouse.get_pressed()
@@ -219,7 +271,7 @@ class App(Sprite):
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     self.on_click_pos()
                     i,j = self.i,self.j
-                    if (i != previ or j != prevj) and self.end == False:
+                    if (i != previ or j != prevj) and self.end == False and self.can_click == True:
                         self.images[i][j].blitme() 
                         previ = i
                         prevj = j
@@ -238,15 +290,26 @@ class App(Sprite):
                                 prevj = -1
                 if self.next == True and self.end == False:
                     self.update()
-                    print(self.stage)
                     self.next = False
-            if self.stage == 14 and time.time() - self.time_click > self.time_delay and time.time() - self.time_click < self.time_delay+0.1:
+                    self.can_click = True
+            if self.stage == (self.row*self.column)//2*2 and time.time() - self.time_click > self.time_delay and time.time() - self.time_click < self.time_delay+0.1:
+                #self.score()
                 self.ending()
-                    
+                
             pygame.display.flip()
-            self.clock.tick(120)
+            self.clock.tick(240)
+
         self.on_cleanup()
+    
+    def score(self):
+        if self.level in self.scores.keys():
+            self.scores[self.level] += [self.time_use]
+        else:
+            self.scores[self.level] = [self.time_use]
+        pickle.dump(self.scores,open("scores.idx",'wb'))
+            
  
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
+    theApp.score()
