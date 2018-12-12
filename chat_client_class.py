@@ -64,24 +64,32 @@ class Client:
         return my_msg, peer_msg
 
     def output(self):
-        if self.sm.get_state() != S_OFFLINE:
+        if self.sm.get_state() == S_LOGGEDIN:
             if len(self.system_msg) > 0:
                 if self.MPage.point_to == 1:
-                    if self.MPage.whoPage.point_to == 0:     #whopage
+                    if self.MPage.whoPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 1:     #whopage
                         #print("whopage")
-                        self.MPage.whoPage.add_names(self.system_msg) #insert
+                        self.MPage.whoPage.add_names(self.system_msg) #insert text
                         self.system_msg = self.system_msg.split("\n")[2].strip("{").strip("}")
                         names = self.system_msg.split(", ")
                         namelst = [names[i][1:-4] for i in range(len(names))]
                         self.MPage.whoPage.set_namelst(namelst)
-                        
-                            
                         self.system_msg = ''
-                '''
-                    if self.MPage.whoPage.chatPage.point_to == 1:
-                        self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg)
+                    if self.MPage.whoPage.chatPage.point_to == 2:
+                        self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg) #insert text
                         self.system_msg = ''
-                        '''
+                
+            try:
+                self.root.update()
+            except:
+                pass
+            
+        elif self.sm.get_state() == S_CHATTING:
+            if len(self.system_msg) > 0:
+                #print(self.system_msg)
+                #if self.MPage.whoPage.point_to == 2 and (self.MPage.whoPage.chatPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 2):
+                self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg + "\n") #insert text
+                self.system_msg = ''
             try:
                 self.root.update()
             except:
@@ -123,29 +131,83 @@ class Client:
                         self.console_last = 'name'
                 except:
                     self.console_input = []
-            elif self.sm.get_state() == S_LOGGEDIN or S_CHATTING:
+            elif self.sm.get_state() == S_LOGGEDIN:
                 try:
-                    if self.MPage.point_to == 1 and self.MPage.whoPage.point_to == 0 and self.console_last != 'who':
-                #or \
-                #(self.MPage.whoPage.point_to == 2 and\
-                #self.MPage.whoPage.chatPage.point_to == 1) :
-                        self.console_input.append('who')
-                        self.console_last = 'who'
-                        #print("getwho") once
-                    if self.MPage.point_to == 2 and self.MPage.timePage.point_to == 0 and self.console_last != 'time':
-                        self.console_input.append('time')
-                        self.console_last = 'time'
-                    if self.MPage.point_to == 3 and self.MPage.sonnetPage.point_to == 0 and self.console_last != 'p':
-                        self.console_input.append('p')
-                        self.console_last = 'p'
-                    if self.MPage.point_to == 4 and self.MPage.searchPage.point_to == 0 and self.console_last != '?':
-                        self.console_input.append('?')
-                        self.console_last = '?'
-                    if self.MPage.point_to == 1 and self.MPage.whoPage.point_to == 2 and self.MPage.whoPage.chatPage.point_to == 0 and self.console_last != 'c':
-                        self.console_input.append('c')
-                        self.console_last = 'c'
+                    if self.MPage.point_to == 1:
+                        if (self.MPage.whoPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 1):#whopage
+                            if self.console_last != 'who':
+                                self.console_input.append('who')
+                                self.console_last = 'who'
+                                #print("whopage")
+                        if (self.MPage.whoPage.point_to == 2 and self.MPage.whoPage.chatPage.point_to == 0):#to chatpage
+                            if self.console_last != 'c':
+                                self.console_input.append('c '+ self.MPage.whoPage.target)
+                                
+                                # tell if chat with self
+                                
+                                self.console_last = 'c'
+                        if self.MPage.whoPage.point_to == 1:  #mainpage
+                            self.console_last = "main"
+                    '''
+                    now cant go back to whopage when requested chatting
+                    divide main to who and chat to who
+                    '''
+                        
+                    if self.MPage.point_to == 2:
+                        if self.MPage.timePage.point_to == 0:
+                            if self.console_last != 'time':
+                                self.console_input.append('time')
+                                self.console_last = 'time'
+                        if self.MPage.timePage.point_to == 1:          # changed
+                            self.console_last = "main"
+                            
+                    if self.MPage.point_to == 3:
+                        if self.MPage.sonnetPage.point_to == 0:
+                            if self.console_last != 'p':
+                                self.console_input.append('p')
+                                self.console_last = 'p'
+                        if self.MPage.sonnetPage.point_to == 1:
+                            self.console_last = "main"
+                            
+                    if self.MPage.point_to == 4: 
+                        if self.MPage.searchPage.point_to == 0:
+                            if self.console_last != '?':
+                                self.console_input.append('?')
+                                self.console_last = '?'  
+                        if self.MPage.searchPage.point_to == 1:
+                            self.console_last = "main"
                 except:
                     self.console_input = []
+            elif self.sm.get_state() == S_CHATTING:
+                #self.MPage.whoPage.chatPage.pack()
+                #self.root.update()
+                #self.text_last = ""   #avoid endless loop
+                if self.MPage.whoPage.chatPage.point_to == 2:
+                    self.console_input.append('bye')
+                    self.MPage.whoPage.chatPage.setBack(1)
+                else:
+                    try:
+                        
+                        text = self.MPage.whoPage.chatPage.getText().strip("\n")
+                        #time.sleep(0.01)
+                        #if text == "\n":
+                            #text = ""
+                        #self.MPage.whoPage.chatPage.deletetxtlst()
+                        #print("1:"+text)
+                        if text != "":
+                            self.console_input.append(text)
+                            #self.MPage.whoPage.chatPage.msglst.insert(END,text + "\n")  #Not here
+                            
+                            self.MPage.whoPage.chatPage.deleteText()
+                            print("2:"+text)
+                        
+                        #if text != "":
+                            #print(self.console_input)             
+                       
+                        
+                    except:
+                        self.console_input = []
+
             
                    
                     
@@ -163,6 +225,12 @@ class Client:
         self.output()
         while self.sm.get_state() != S_OFFLINE:
             self.proc()
+            if self.sm.get_state() == S_CHATTING:
+                if self.MPage.whoPage.chatPage.backcase == 1:
+                    self.MPage.whoPage.chatPage.setBack(2)
+                self.MPage.whoPage.req_target()
+                self.MPage.forget_to_chat()
+            self.MPage.whoPage.chatPage.setBack(1)   
             self.output()
             time.sleep(CHAT_WAIT)
         self.quit()

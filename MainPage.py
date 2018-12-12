@@ -39,7 +39,7 @@ class MainPage(object):
         self.whoPage.pack()
         self.point_to = 1
         self.whoPage.point_to = 0
-        print(self.point_to)		
+        #print(self.point_to)		
 
 
 	
@@ -63,3 +63,13 @@ class MainPage(object):
         self.searchPage.pack()
         self.point_to = 4
         self.searchPage.point_to = 0
+        
+    def forget_to_chat(self):
+        self.page.pack_forget()	
+        self.whoPage.pack_forget()
+        self.timePage.pack_forget()
+        self.sonnetPage.pack_forget()
+        self.searchPage.pack_forget()
+        self.point_to = 1
+        self.whoPage.point_to = 2
+        
