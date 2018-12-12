@@ -246,7 +246,8 @@ class App(Sprite):
             pygame.display.flip()
             self.clock.tick(120)
         self.on_cleanup()
- 
+'''
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()
+'''

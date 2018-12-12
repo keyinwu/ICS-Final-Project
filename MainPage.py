@@ -1,5 +1,6 @@
 from tkinter import *
 from view import *  
+import main
 
 class MainPage(object):	
     def __init__(self, master=None):		
@@ -67,7 +68,8 @@ class MainPage(object):
         '''
         
     def gameDisp(self):
-        pass
+        theApp = main.App()
+        theApp.on_execute()
         
     def forget_to_chat(self):
         self.page.pack_forget()	
