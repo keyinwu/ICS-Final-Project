@@ -202,7 +202,6 @@ class App(Sprite):
             self.end = False
 
     def on_click_pos(self):
-        print(self.i,self.j)
         mouseX = pygame.mouse.get_pos()[0]
         mouseY = pygame.mouse.get_pos()[1]
         for l in self.basicImages:   
@@ -210,7 +209,6 @@ class App(Sprite):
                 if v.rect.collidepoint(mouseX, mouseY) == True:
                     self.i = self.basicImages.index(l)
                     self.j = l.index(v)
-                    #print(self.i,self.j)
                 
     def add_check(self,i,j):
         if len(self.toCheck)<2:
@@ -300,31 +298,3 @@ class App(Sprite):
             self.clock.tick(240)
 
         self.on_cleanup()
-<<<<<<< HEAD
-
-'''
-=======
-        '''
-<<<<<<< HEAD
-
->>>>>>> 609b198933e8d02dfcb10a33bbbe94eb5d647134
-if __name__ == "__main__" :
-    theApp = App()
-    theApp.on_execute()
-
-=======
-    
-    def score(self):
-        if self.level in self.scores.keys():
-            self.scores[self.level] += [self.time_use]
-        else:
-            self.scores[self.level] = [self.time_use]
-        pickle.dump(self.scores,open("scores.idx",'wb'))
-            
- 
-if __name__ == "__main__" :
-    theApp = App()
-    theApp.on_execute()
-    theApp.score()
->>>>>>> 984eb869a0f086f11439650017424b9b4a358ca2
-'''

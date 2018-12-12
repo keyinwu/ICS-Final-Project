@@ -189,11 +189,11 @@ class ChatFrame(Frame):
 
         
     def sendMsgEvent(self,event):
-        if event.keycode==13:
-            self.gettext, myMsg = self.txtlst.get("0.0",END), self.txtlst.get("0.0",END)
-            self.txtlst.delete("0.0",END)
-            self.msglst.insert(END,myMsg.strip("\n") + "\n") 
-            #print("text: "+ self.gettext +"strip: " + self.gettext.strip("\n"))
+        #if event.keycode==13:
+        self.gettext, myMsg = self.txtlst.get("0.0",END), self.txtlst.get("0.0",END)
+        self.txtlst.delete("0.0",END)
+        self.msglst.insert(END,myMsg.strip("\n") + "\n")
+        #print("text: "+ self.gettext +"strip: " + self.gettext.strip("\n"))
 
                 
     
