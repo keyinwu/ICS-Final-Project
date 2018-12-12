@@ -68,8 +68,8 @@ class MainPage(object):
         self.page.pack_forget()	
         self.whoPage.pack_forget()
         self.timePage.pack_forget()
-        self.sonnetPage.pack_forget()
-        self.searchPage.pack_forget()
+        #self.sonnetPage.pack_forget()
+        #self.searchPage.pack_forget()
         self.point_to = 1
         self.whoPage.point_to = 2
         
