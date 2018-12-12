@@ -69,6 +69,7 @@ class Client:
                 if self.MPage.point_to == 1:
                     if self.MPage.whoPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 1:     #whopage
                         #print("whopage")
+                        self.MPage.whoPage.list_all.delete(0.0, END)# clear previous info
                         self.MPage.whoPage.add_names(self.system_msg) #insert text
                         self.system_msg = self.system_msg.split("\n")[2].strip("{").strip("}")
                         names = self.system_msg.split(", ")
@@ -78,6 +79,19 @@ class Client:
                     if self.MPage.whoPage.chatPage.point_to == 2:
                         self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg) #insert text
                         self.system_msg = ''
+                if self.MPage.point_to == 2:
+                    if self.MPage.timePage.point_to == 0:
+                        self.MPage.timePage.timeUpdate(self.system_msg)
+                        self.system_msg = ''
+                if self.MPage.point_to == 3:
+                    if self.MPage.sonnetPage.point_to == 2:
+                        try:
+                            #print(self.system_msg)
+                            self.MPage.sonnetPage.sLabel.config(text = self.system_msg)
+                            #self.MPage.sonnetPage.sUpdate(self.system_msg)
+                            self.system_msg = ''
+                        except:
+                            pass
                 
             try:
                 self.root.update()
@@ -87,7 +101,6 @@ class Client:
         elif self.sm.get_state() == S_CHATTING:
             if len(self.system_msg) > 0:
                 #print(self.system_msg)
-                #if self.MPage.whoPage.point_to == 2 and (self.MPage.whoPage.chatPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 2):
                 self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg + "\n") #insert text
                 self.system_msg = ''
             try:
@@ -110,7 +123,8 @@ class Client:
                 #self.print_instructions()  temporarily comment
                 return (True)
             elif response["status"] == 'duplicate':
-                self.system_msg += 'Duplicate username, try again'
+                #self.system_msg += 'Duplicate username, try again'
+                self.LPage.showinfo()
                 return False
         else:               # fix: dup is only one of the reasons
            return(False)
@@ -162,10 +176,11 @@ class Client:
                             self.console_last = "main"
                             
                     if self.MPage.point_to == 3:
-                        if self.MPage.sonnetPage.point_to == 0:
-                            if self.console_last != 'p':
-                                self.console_input.append('p')
-                                self.console_last = 'p'
+                        if self.MPage.sonnetPage.point_to == 2:
+                            self.sonnetNumber = self.MPage.sonnetPage.getNum()
+                            if self.console_last != 'p ' + self.sonnetNumber: 
+                                self.console_input.append('p ' + self.sonnetNumber)
+                                self.console_last = 'p ' + self.sonnetNumber
                         if self.MPage.sonnetPage.point_to == 1:
                             self.console_last = "main"
                             
@@ -182,31 +197,24 @@ class Client:
                 #self.MPage.whoPage.chatPage.pack()
                 #self.root.update()
                 #self.text_last = ""   #avoid endless loop
-                if self.MPage.whoPage.chatPage.point_to == 2:
-                    self.console_input.append('bye')
-                    self.MPage.whoPage.chatPage.setBack(1)
-                else:
-                    try:
+                #if self.MPage.whoPage.chatPage.point_to == 1:
+                    #self.MPage.whoPage.chatPage.goBack()
+                    #self.console_input.append('bye')
+                    #self.MPage.whoPage.chatPage.setBack(1)
+                #else:
+                try:
+                    
+                    text = self.MPage.whoPage.chatPage.getText().strip("\n")
+                    #self.MPage.whoPage.chatPage.deletetxtlst()
+                    if text != "":
+                        self.console_input.append(text)
+                        #self.MPage.whoPage.chatPage.msglst.insert(END,text + "\n")  #Not here
                         
-                        text = self.MPage.whoPage.chatPage.getText().strip("\n")
-                        #time.sleep(0.01)
-                        #if text == "\n":
-                            #text = ""
-                        #self.MPage.whoPage.chatPage.deletetxtlst()
-                        #print("1:"+text)
-                        if text != "":
-                            self.console_input.append(text)
-                            #self.MPage.whoPage.chatPage.msglst.insert(END,text + "\n")  #Not here
-                            
-                            self.MPage.whoPage.chatPage.deleteText()
-                            print("2:"+text)
+                        self.MPage.whoPage.chatPage.deleteText()
+                                               
                         
-                        #if text != "":
-                            #print(self.console_input)             
-                       
-                        
-                    except:
-                        self.console_input = []
+                except:
+                    self.console_input = []
 
             
                    
@@ -226,11 +234,9 @@ class Client:
         while self.sm.get_state() != S_OFFLINE:
             self.proc()
             if self.sm.get_state() == S_CHATTING:
-                if self.MPage.whoPage.chatPage.backcase == 1:
-                    self.MPage.whoPage.chatPage.setBack(2)
                 self.MPage.whoPage.req_target()
                 self.MPage.forget_to_chat()
-            self.MPage.whoPage.chatPage.setBack(1)   
+  
             self.output()
             time.sleep(CHAT_WAIT)
         self.quit()

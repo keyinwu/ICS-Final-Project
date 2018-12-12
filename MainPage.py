@@ -32,6 +32,7 @@ class MainPage(object):
         Button(self.page, text='time', command=self.timeDisp).grid(row=2) 
         Button(self.page, text='sonnet', command=self.sonnetDisp).grid(row=3,  pady=10)		
         Button(self.page, text='search', command=self.searchDisp).grid(row=4) 
+        Button(self.page, text='flip-flop', command=self.gameDisp).grid(row=5, pady=10) 
 
         
     def whoDisp(self):	
@@ -63,6 +64,9 @@ class MainPage(object):
         self.searchPage.pack()
         self.point_to = 4
         self.searchPage.point_to = 0
+        
+    def gameDisp(self):
+        pass
         
     def forget_to_chat(self):
         self.page.pack_forget()	

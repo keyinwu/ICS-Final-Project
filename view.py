@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter.messagebox import * 
+import time
 
 class WhoFrame(Frame): # inherit Frame class
     def __init__(self, master=None,mainpage = None):		
@@ -87,6 +88,11 @@ class TimeFrame(Frame):
     def createPage(self):		
         Label(self).grid(row=0, stick=W)
         Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        self.timeLabel = Label(self, text = "")
+        self.timeLabel.grid(row=4, pady=10)
+        
+    def timeUpdate(self,cTime):
+        self.timeLabel.config(text = cTime)
         
     def back(self):
         self.point_to = 1 #to mainpage        
@@ -99,11 +105,28 @@ class SonnetFrame(Frame):
         self.root = master 
         self.page = mainpage
         self.point_to = 0 #point to itself 
+        self.ronum = StringVar()
         self.createPage() 	
+        
         
     def createPage(self):		  
         Label(self).grid(row=0, stick=W)
         Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        
+        Label(self, text = 'Choose a number from 1 to 154 ').grid(row=2, stick=W, pady=10)		
+        Entry(self, textvariable=self.ronum).grid(row=2, column=1, stick=E)	
+        
+        Button(self, text='OK', command = self.sUpdate).grid(row=2,column=2, pady=10)		
+
+        self.sLabel = Label(self, text = "")
+        self.sLabel.grid(row=4, pady=10)
+        
+    def getNum(self):
+        return self.ronum.get()	
+        
+    def sUpdate(self):
+        self.point_to = 2 #point to sonnet
+        
         
     def back(self):
         self.point_to = 1 #to mainpage        
@@ -175,18 +198,18 @@ class ChatFrame(Frame):
     def deleteText(self):
         self.gettext = ""
         
-    def setBack(self,n):
-        self.backcase = n
+    def goBack(self):
+        self.msglst.insert(END,"Please say 'bye' to disconnect before you go back.\n")
         
         
     def back(self):
-        if self.backcase == 1:
-            self.point_to = 1 #to whopage 
+        #if self.backcase == 1:
+        self.point_to = 1 #to whopage 
             #print(self.point_to)
-            self.page.pack()	
-            self.pack_forget()
-        if self.backcase == 2:
-            self.point_to = 2
+        self.page.pack()	
+        self.pack_forget()
+        #if self.backcase == 2:
+            #self.point_to = 2
             #self.setBack(1)
         
         
