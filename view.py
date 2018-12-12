@@ -23,7 +23,7 @@ class WhoFrame(Frame): # inherit Frame class
         
     def createPage(self):		
         Label(self).grid(row=0, stick=W)
-        Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        Button(self, text='back', command=self.back).grid(row=1,stick=E,  pady=10)
         
         self.names = StringVar()
         self.namesChosen = ttk.Combobox(self, width = 20, textvariable = self.names, state='readonly')
@@ -38,10 +38,7 @@ class WhoFrame(Frame): # inherit Frame class
         
         self.chatPage = ChatFrame(self.root, self)
         
-        '''
-        Label(self, text = '药品名称: ').grid(row=1, stick=W, pady=10)		
-        Entry(self, textvariable=self.itemName).grid(row=1, column=1, stick=E)		
-        '''
+
     
     def set_namelst(self,namelst):
         self.namelst = namelst
@@ -87,7 +84,7 @@ class TimeFrame(Frame):
               
     def createPage(self):		
         Label(self).grid(row=0, stick=W)
-        Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        Button(self, text='back', command=self.back).grid(row=1, pady=10)
         self.timeLabel = Label(self, text = "")
         self.timeLabel.grid(row=4, pady=10)
         
@@ -106,27 +103,37 @@ class SonnetFrame(Frame):
         self.page = mainpage
         self.point_to = 0 #point to itself 
         self.ronum = StringVar()
+        self.numStr = ""
         self.createPage() 	
         
         
     def createPage(self):		  
         Label(self).grid(row=0, stick=W)
-        Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        Button(self, text='back', command=self.back).grid(row=1,column=2, stick=E,  pady=10)
         
         Label(self, text = 'Choose a number from 1 to 154 ').grid(row=2, stick=W, pady=10)		
         Entry(self, textvariable=self.ronum).grid(row=2, column=1, stick=E)	
         
-        Button(self, text='OK', command = self.sUpdate).grid(row=2,column=2, pady=10)		
+        Button(self, text='OK', command = self.sUpdate).grid(row=2,column=2, pady=10)
 
-        self.sLabel = Label(self, text = "")
-        self.sLabel.grid(row=4, pady=10)
+        self.list_s = Text(self,width=55,height=10)
+        self.list_s.grid(row=3,columnspan=3,pady=5)		
+
+        #self.sLabel = Label(self, text = "")
+        #self.sLabel.grid(row=4, pady=10)
         
     def getNum(self):
-        return self.ronum.get()	
+        #print("getnumber")
+        self.numStr =  self.ronum.get()
+        print("numstr:"+self.numStr)
         
     def sUpdate(self):
         self.point_to = 2 #point to sonnet
+        #print("buttonclicked")
         
+        
+    def add_sonnet(self,msg):
+        self.list_all.insert(END, msg)
         
     def back(self):
         self.point_to = 1 #to mainpage        
@@ -143,7 +150,7 @@ class SearchFrame(Frame):
    
     def createPage(self):		
         Label(self).grid(row=0, stick=W)
-        Button(self, text='back', command=self.back).grid(row=1,  pady=10)
+        Button(self, text='back', command=self.back).grid(row=1,stick=E,  pady=10)
         
     def back(self):
         self.subpoint_to = 1 #to mainpage        

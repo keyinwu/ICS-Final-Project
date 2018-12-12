@@ -30,9 +30,9 @@ class MainPage(object):
         Label(self.page).grid(row=0, stick=W)	
         Button(self.page, text='who?', command=self.whoDisp).grid(row=1,  pady=10)		
         Button(self.page, text='time', command=self.timeDisp).grid(row=2) 
-        Button(self.page, text='sonnet', command=self.sonnetDisp).grid(row=3,  pady=10)		
-        Button(self.page, text='search', command=self.searchDisp).grid(row=4) 
-        Button(self.page, text='flip-flop', command=self.gameDisp).grid(row=5, pady=10) 
+        #Button(self.page, text='sonnet', command=self.sonnetDisp).grid(row=3,  pady=10)		
+        #Button(self.page, text='search', command=self.searchDisp).grid(row=3) 
+        Button(self.page, text='flip-flop', command=self.gameDisp).grid(row=3, pady=10) 
 
         
     def whoDisp(self):	
@@ -51,7 +51,7 @@ class MainPage(object):
         self.point_to = 2	
         self.timePage.point_to = 0
 	
-        
+    '''    
     def sonnetDisp(self):		
         self.page.pack_forget()		
         self.sonnetPage.pack()
@@ -64,6 +64,7 @@ class MainPage(object):
         self.searchPage.pack()
         self.point_to = 4
         self.searchPage.point_to = 0
+        '''
         
     def gameDisp(self):
         pass

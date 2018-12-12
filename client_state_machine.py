@@ -79,10 +79,14 @@ class ClientSM:
                     peer = peer.strip()
                     if self.connect_to(peer) == True:
                         self.state = S_CHATTING
-                        self.out_msg += 'Connect to ' + peer + '. Chat away!\n\n'
+                        self.out_msg += 'Connect to ' + peer + '. Chat away!\nPlease say "bye" before you go back.\n\n'
                         self.out_msg += '-----------------------------------\n'
                     else:
-                        self.out_msg += 'Connection unsuccessful\n'
+                        self.out_msg += 'Connection unsuccessful\n\n++++ Choose one of the following commands\n \
+        ? _term_: to search your chat logs where _term_ appears\n \
+        p _#_: to get number <#> sonnet\n \
+        q: to leave the chat system\n \
+        or go back to chat with other users\n\n'
 
                 elif my_msg[0] == '?':
                     term = my_msg[1:].strip()
@@ -104,7 +108,7 @@ class ClientSM:
                         self.out_msg += 'Sonnet ' + poem_idx + ' not found\n\n'
 
                 else:
-                    self.out_msg += menu
+                    self.out_msg += "Sorry. The chat system can't give response."
             
 
             if len(peer_msg) > 0:
@@ -113,7 +117,7 @@ class ClientSM:
                     self.peer = peer_msg["from"]
                     self.out_msg += 'Request from ' + self.peer + '\n'
                     self.out_msg += 'You are connected with ' + self.peer
-                    self.out_msg += '. Chat away!\n\n'
+                    self.out_msg += '. Chat away!\nPlease say "bye" before you go back.\n\n'
                     self.out_msg += '------------------------------------\n'
                     self.state = S_CHATTING
 

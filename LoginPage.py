@@ -25,7 +25,7 @@ class LoginPage(object):
         Entry(self.page, textvariable=self.username).grid(row=1, column=1, stick=E)		
         #Label(self.page, text = 'password: ').grid(row=2, stick=W, pady=10)		
         #Entry(self.page, textvariable=self.password, show='*').grid(row=2, column=1, stick=E)		
-        Button(self.page, text='log in', command=self.loginCheck).grid(row=3, pady=10)		
+        Button(self.page, text='log in', command=self.loginCheck).grid(row=3, column=1, pady=10)		
         #Button(self.page, text='sign up', command=self.signup).grid(row=3, column=1, stick=E) 	
         
     def loginCheck(self):		

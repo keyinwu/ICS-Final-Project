@@ -76,22 +76,26 @@ class Client:
                         namelst = [names[i][1:-4] for i in range(len(names))]
                         self.MPage.whoPage.set_namelst(namelst)
                         self.system_msg = ''
-                    if self.MPage.whoPage.chatPage.point_to == 2:
+                    if self.MPage.whoPage.chatPage.point_to == 0:
                         self.MPage.whoPage.chatPage.msglst.insert(END,self.system_msg) #insert text
                         self.system_msg = ''
                 if self.MPage.point_to == 2:
                     if self.MPage.timePage.point_to == 0:
                         self.MPage.timePage.timeUpdate(self.system_msg)
                         self.system_msg = ''
+                        '''
                 if self.MPage.point_to == 3:
                     if self.MPage.sonnetPage.point_to == 2:
                         try:
+                            self.MPage.sonnetPage.list_s.delete(0.0, END)# clear previous info
+                            self.MPage.sonnetPage.add_sonnet(self.system_msg) #insert text
                             #print(self.system_msg)
-                            self.MPage.sonnetPage.sLabel.config(text = self.system_msg)
+                            #self.MPage.sonnetPage.sLabel.config(text = self.system_msg)
                             #self.MPage.sonnetPage.sUpdate(self.system_msg)
                             self.system_msg = ''
                         except:
                             pass
+                            '''
                 
             try:
                 self.root.update()
@@ -148,18 +152,30 @@ class Client:
             elif self.sm.get_state() == S_LOGGEDIN:
                 try:
                     if self.MPage.point_to == 1:
-                        if (self.MPage.whoPage.point_to == 0 or self.MPage.whoPage.chatPage.point_to == 1):#whopage
+                        if self.MPage.whoPage.point_to == 0 or (self.MPage.whoPage.point_to == 2 and self.MPage.whoPage.chatPage.point_to == 1):#whopage
                             if self.console_last != 'who':
                                 self.console_input.append('who')
                                 self.console_last = 'who'
                                 #print("whopage")
                         if (self.MPage.whoPage.point_to == 2 and self.MPage.whoPage.chatPage.point_to == 0):#to chatpage
                             if self.console_last != 'c':
-                                self.console_input.append('c '+ self.MPage.whoPage.target)
-                                
-                                # tell if chat with self
-                                
+                                self.console_input.append('c '+ self.MPage.whoPage.target)                                
                                 self.console_last = 'c'
+                            else:
+                                try:
+                    
+                                    text = self.MPage.whoPage.chatPage.getText().strip("\n")
+                                    #self.MPage.whoPage.chatPage.deletetxtlst()
+                                    if text != "":
+                                        self.console_input.append(text)
+                                        #self.MPage.whoPage.chatPage.msglst.insert(END,text + "\n")  #Not here
+                        
+                                        self.MPage.whoPage.chatPage.deleteText()
+                            
+                        
+                                except:
+                                    self.console_input = []
+                                    
                         if self.MPage.whoPage.point_to == 1:  #mainpage
                             self.console_last = "main"
                     '''
@@ -174,13 +190,20 @@ class Client:
                                 self.console_last = 'time'
                         if self.MPage.timePage.point_to == 1:          # changed
                             self.console_last = "main"
-                            
+                            '''
                     if self.MPage.point_to == 3:
                         if self.MPage.sonnetPage.point_to == 2:
-                            self.sonnetNumber = self.MPage.sonnetPage.getNum()
-                            if self.console_last != 'p ' + self.sonnetNumber: 
-                                self.console_input.append('p ' + self.sonnetNumber)
-                                self.console_last = 'p ' + self.sonnetNumber
+                            #print("there")
+                            self.MPage.sonnetPage.getNum()
+                            sonnetNumber = self.MPage.sonnetPage.numStr
+                            #print(self.sonnetNumber)
+                            #print("here")
+                            print(sonnetNumber)
+                            if self.console_last != 'p ' + sonnetNumber: 
+                           
+                                #print(sonnetNumber)
+                                self.console_input.append('p ' + sonnetNumber)
+                                self.console_last = 'p ' + sonnetNumber
                         if self.MPage.sonnetPage.point_to == 1:
                             self.console_last = "main"
                             
@@ -191,6 +214,7 @@ class Client:
                                 self.console_last = '?'  
                         if self.MPage.searchPage.point_to == 1:
                             self.console_last = "main"
+                            '''
                 except:
                     self.console_input = []
             elif self.sm.get_state() == S_CHATTING:
@@ -236,6 +260,7 @@ class Client:
             if self.sm.get_state() == S_CHATTING:
                 self.MPage.whoPage.req_target()
                 self.MPage.forget_to_chat()
+                self.console_last = 'c'
   
             self.output()
             time.sleep(CHAT_WAIT)
