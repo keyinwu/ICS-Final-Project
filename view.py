@@ -52,7 +52,6 @@ class WhoFrame(Frame): # inherit Frame class
         #print(self.target)
         self.point_to = 2 #to chatpage
         self.chatPage.point_to = 0
-        #print(self.point_to)
         	
         self.pack_forget()
         self.chatPage.pack()		
@@ -66,7 +65,6 @@ class WhoFrame(Frame): # inherit Frame class
     def back(self):
         self.target = ""
         self.point_to = 1 #to mainpage
-        #print(self.point_to)
         self.page.pack()	
         self.pack_forget()
        	
@@ -95,7 +93,7 @@ class TimeFrame(Frame):
         self.point_to = 1 #to mainpage        
         self.page.pack()	
         self.pack_forget()	
-        
+'''        
 class SonnetFrame(Frame): 
     def __init__(self, master=None,mainpage = None):		
         Frame.__init__(self, master)		
@@ -156,7 +154,7 @@ class SearchFrame(Frame):
         self.subpoint_to = 1 #to mainpage        
         self.page.pack()	
         self.pack_forget()	
-        
+'''        
 class ChatFrame(Frame):
     def __init__(self, master = None, mainpage = None):
         Frame.__init__(self, master)

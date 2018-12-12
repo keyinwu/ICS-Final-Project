@@ -17,23 +17,16 @@ class MainPage(object):
   
         self.whoPage = WhoFrame(self.root, self.page) # create different Frame
         self.timePage = TimeFrame(self.root, self.page)		
-        self.sonnetPage = SonnetFrame(self.root, self.page)		
-        self.searchPage = SearchFrame(self.root, self.page)		
+        #self.sonnetPage = SonnetFrame(self.root, self.page)		
+        #self.searchPage = SearchFrame(self.root, self.page)		
 
-        '''
-        menubar = Menu(self.root)		
-        menubar.add_command(label='1', command = self.inputData)		
-        menubar.add_command(label='2', command = self.queryData)		
-        menubar.add_command(label='3', command = self.countData)		
-        menubar.add_command(label='4', command = self.aboutDisp)		
-        self.root['menu'] = menubar  # menu
-        '''
+
         Label(self.page).grid(row=0, stick=W)	
-        Button(self.page, text='who?', command=self.whoDisp).grid(row=1,  pady=10)		
+        Button(self.page, text='who?', command=self.whoDisp).grid(row=1,  pady=20)		
         Button(self.page, text='time', command=self.timeDisp).grid(row=2) 
         #Button(self.page, text='sonnet', command=self.sonnetDisp).grid(row=3,  pady=10)		
         #Button(self.page, text='search', command=self.searchDisp).grid(row=3) 
-        Button(self.page, text='flip-flop', command=self.gameDisp).grid(row=3, pady=10) 
+        Button(self.page, text='flip-flop', command=self.gameDisp).grid(row=3, pady=20) 
 
         
     def whoDisp(self):	
@@ -42,8 +35,6 @@ class MainPage(object):
         self.point_to = 1
         self.whoPage.point_to = 0
         #print(self.point_to)		
-
-
 	
         
     def timeDisp(self):		
@@ -65,11 +56,13 @@ class MainPage(object):
         self.searchPage.pack()
         self.point_to = 4
         self.searchPage.point_to = 0
-        '''
+    '''
         
     def gameDisp(self):
+        
         theApp = main.App()
         theApp.on_execute()
+        
         
     def forget_to_chat(self):
         self.page.pack_forget()	

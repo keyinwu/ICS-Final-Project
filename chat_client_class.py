@@ -24,7 +24,6 @@ class Client:
         
         self.root = Tk()
         self.root.title('Welcome to ICS chat')
-
         
 
     def quit(self):
@@ -138,8 +137,6 @@ class Client:
         #while True:
             #text = sys.stdin.readline()[:-1]
             #self.console_input.append(text) # no need for lock, append is thread safe
-            
-
         while True:
             if self.sm.get_state() == S_OFFLINE:
                 try:
@@ -218,14 +215,6 @@ class Client:
                 except:
                     self.console_input = []
             elif self.sm.get_state() == S_CHATTING:
-                #self.MPage.whoPage.chatPage.pack()
-                #self.root.update()
-                #self.text_last = ""   #avoid endless loop
-                #if self.MPage.whoPage.chatPage.point_to == 1:
-                    #self.MPage.whoPage.chatPage.goBack()
-                    #self.console_input.append('bye')
-                    #self.MPage.whoPage.chatPage.setBack(1)
-                #else:
                 try:
                     
                     text = self.MPage.whoPage.chatPage.getText().strip("\n")
@@ -239,10 +228,7 @@ class Client:
                         
                 except:
                     self.console_input = []
-
-            
-                   
-                    
+                 
     def print_instructions(self):
         self.system_msg += menu
 
@@ -267,27 +253,6 @@ class Client:
         self.quit()
             
         
-            
-           
-        
-        
-        '''
-        self.system_msg += 'Welcome to ICS chat\n'
-        self.system_msg += 'Please enter your name: '
-        self.output()
-        
-        while self.login() != True:
-            self.output()
-            
-        
-        self.system_msg += 'Welcome, ' + self.get_name() + '!'
-        self.output()
-        while self.sm.get_state() != S_OFFLINE:
-            self.proc()
-            self.output()
-            time.sleep(CHAT_WAIT)
-        self.quit()
-        '''
 
 #==============================================================================
 # main processing loop

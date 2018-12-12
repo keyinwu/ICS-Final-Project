@@ -300,8 +300,14 @@ class App(Sprite):
             self.clock.tick(240)
 
         self.on_cleanup()
+<<<<<<< HEAD
 
 '''
+=======
+        '''
+<<<<<<< HEAD
+
+>>>>>>> 609b198933e8d02dfcb10a33bbbe94eb5d647134
 if __name__ == "__main__" :
     theApp = App()
     theApp.on_execute()

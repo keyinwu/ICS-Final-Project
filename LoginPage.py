@@ -30,29 +30,6 @@ class LoginPage(object):
         
     def loginCheck(self):		
         self.name = self.username.get()	
-        #print(self.name)
-        #self.logged = True
-        
-        '''
-        name = self.username.get()		
-        secret = self.password.get()	
-        self.page.destroy()			
-        MainPage(self.root)
-        '''
-        '''
-        if name=='ww' and secret=='123456':			
-            self.page.destroy()			
-            MainPage(self.root)
-        else:
-            showinfo(title='Error', message='incorrect username or password')
-        '''
-    
+
     def showinfo(self):
         showinfo(title = 'Error', message = 'Duplicate username, try again')
-        
-    def signup(self):
-        
-        self.top = Toplevel()
-        self.top.geometry("%dx%d+%d+%d" % (100, 80, self.x + 500, self.y + 300))
-        self.top.title("Success")
-        Label(self.top, text = "Now you can log in").pack()
